@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {Route, BrowserRouter, Redirect, Switch} from 'react-router-dom';
 import './App.css';
 
@@ -13,7 +13,24 @@ import Navbar from '../components/Navbar/Navbar';
 // import Register from '../components/Register/Register';
 // import SingleOrder from '../components/SingleOrder/SingleOrder';
 
-class App extends Component {
+const PrivateRoute = ({component: Component, authed, ...rest}) => {
+  return (
+    <Route
+      {...rest}
+      render ={props =>
+        authed === true ? (
+          <Component {...props} />
+        ) : (
+          <Redirect
+            to={{ pathname: '/login', state: {from: props.location}}}
+          />
+        )
+      }
+    />
+  );
+};
+
+class App extends React.Component {
   render () {
     return (
       <div className="App">
@@ -24,7 +41,9 @@ class App extends Component {
               <div className="row">
                 <Switch>
                   <Route path="/" exact component={Home}/>
-                  <Route path="/inventory" component={Inventory}/>
+                  <PrivateRoute path="/inventory"
+                    authed={this.state.authed}
+                    component={Inventory}/>
                 </Switch>
               </div>
             </div>
