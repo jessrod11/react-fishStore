@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import authRequests from '../../FirebaseRequests/auth';
 import './Register.css';
 
 class Register extends React.Component {
@@ -9,6 +10,31 @@ class Register extends React.Component {
       email: '',
       password: '',
     },
+  };
+
+  registerClickEvent = (e) => {
+    const {user} = this.state;
+    e.preventDefault();
+    authRequests
+      .registerUser(user)
+      .then(() => {
+        this.props.history.push('/orders');
+      })
+      .catch((err) => {
+        console.error('error while registering', err);
+      });
+  };
+
+  emailChange = (e) => {
+    const tempUser = {...this.state.user};
+    tempUser.email = e.target.value;
+    this.setState({user: tempUser});
+  };
+
+  passwordChange = (e) => {
+    const tempUser = { ...this.state.user};
+    tempUser.password = e.target.value;
+    this.setState({ user: tempUser });
   };
 
   render () {
