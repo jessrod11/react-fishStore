@@ -6,9 +6,9 @@ class Home extends React.Component {
   render () {
     return (
       <div className="Home">
-        <div className="catc-of-the-day">
+        <div className="catch-of-the-day">
           <div className="menu">
-            <header className="menu">
+            <header className="top">
               <h1>
                 Catch
                 <span className="ofThe">
