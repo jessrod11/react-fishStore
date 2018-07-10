@@ -12,6 +12,12 @@ class New extends React.Component {
     order: {},
   };
 
+  addToOrder = (key) => {
+    const newOrder = {...this.state.order};
+    newOrder[key] = newOrder[key] + 1 || 1;
+    this.setState({order: newOrder});
+  };
+
   componentDidMount () {
     fishRequests
       .getRequest()
@@ -29,6 +35,7 @@ class New extends React.Component {
         <Fish
           key={fish.id}
           details={fish}
+          addToOrder={this.addToOrder}
         />
       );
     });
