@@ -2,8 +2,12 @@ import React from 'react';
 
 import Fish from '../Fish/Fish';
 import Order from '../Order/Order';
+// import moment from 'moment';
 
 import fishRequests from '../../FirebaseRequests/fishes';
+import authRequests from '../../FirebaseRequests/auth';
+import orderRequests from '../../FirebaseRequests/orders';
+
 import './New.css';
 
 class New extends React.Component {
@@ -25,7 +29,17 @@ class New extends React.Component {
   };
 
   saveNewOrder = () => {
-
+    const newOrder = {fishes: {...this.state.order}};
+    newOrder.uid = authRequests.getUID();
+    newOrder.dateTime = Date.now();
+    orderRequests
+      .postRequest(newOrder)
+      .then(() => {
+        this.props.history.push('/orders');
+      })
+      .catch((err) => {
+        console.error('error in order post', err);
+      });
   };
 
   componentDidMount () {
